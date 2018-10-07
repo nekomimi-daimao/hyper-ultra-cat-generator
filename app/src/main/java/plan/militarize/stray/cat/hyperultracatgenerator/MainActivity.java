@@ -12,7 +12,6 @@ import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
@@ -23,6 +22,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.concurrent.ThreadLocalRandom;
 
 import plan.militarize.stray.cat.hyperultracatgenerator.com.android.egg.neko.Cat;
 
@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 
     private AppCompatImageView mCurrentCat;
     private NumberPicker mPicker;
-    private AppCompatEditText jumpEdit;
+    private AppCompatEditText mJumpEdit;
 
     private AppCompatTextView mTextFrom;
     private AppCompatTextView mTextTo;
@@ -44,13 +44,14 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // --- generate cat ---
         mCurrentCat = findViewById(R.id.current_cat);
-        jumpEdit = findViewById(R.id.input_jump);
+        mJumpEdit = findViewById(R.id.input_jump);
         AppCompatButton jumpButton = findViewById(R.id.button_jump);
         jumpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String input = jumpEdit.getText().toString();
+                String input = mJumpEdit.getText().toString();
                 int jump;
                 try {
                     jump = Integer.parseInt(input);
@@ -74,7 +75,10 @@ public class MainActivity extends Activity {
             }
         });
 
+        mJumpEdit.setText(String.valueOf(Math.abs(ThreadLocalRandom.current().nextInt())));
+        jumpButton.callOnClick();
 
+        // --- save 1000 cats ---
         mTextFrom = findViewById(R.id.text_from);
         mTextTo = findViewById(R.id.text_to);
 
