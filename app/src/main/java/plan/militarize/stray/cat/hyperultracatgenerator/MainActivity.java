@@ -158,8 +158,9 @@ public class MainActivity extends AppCompatActivity {
                     requestPermissions(denied, v.getId());
                     return;
                 }
+                CatServeService.startActionSaveCats(getApplicationContext(),0,100);
 
-                Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_SHORT)
+                Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_LONG)
                         .setAction(R.string.go, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -191,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         for (int grantResult : grantResults) {
             if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                Snackbar.make(mCardSave, R.string.request_permission, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mCardSave, R.string.request_permission, Snackbar.LENGTH_LONG).show();
                 return;
             }
         }
@@ -240,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(Intent.createChooser(intent, null));
                 cat.logShare(this);
             } catch (IOException e) {
-                Snackbar.make(mCardSave, R.string.fail_save, Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mCardSave, R.string.fail_save, Snackbar.LENGTH_LONG).show();
             }
         }
     }

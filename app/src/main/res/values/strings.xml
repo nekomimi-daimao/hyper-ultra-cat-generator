@@ -25,7 +25,7 @@
     <string name="limit_over">limit over!</string>
     <string name="save_1000_cats">save 1000 cats</string>
     <string name="save_the_cats">save the cats!</string>
-    <string name="snack_store">stored in Pictures/Cats</string>
+    <string name="snack_store">stored in Pictures/Cats/</string>
     <string name="go">GO</string>
     <string name="fail_save">fail to share cat...</string>
     <string name="request_permission">require permission for save cats...</string>
