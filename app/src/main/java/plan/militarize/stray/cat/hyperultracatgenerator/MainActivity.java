@@ -1,18 +1,21 @@
 package plan.militarize.stray.cat.hyperultracatgenerator;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
@@ -23,22 +26,28 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import plan.militarize.stray.cat.hyperultracatgenerator.com.android.egg.neko.Cat;
 
-public class MainActivity extends Activity {
-    private static final int EXPORT_BITMAP_SIZE = 600;
+public class MainActivity extends AppCompatActivity {
 
+    private static final int EXPORT_BITMAP_SIZE = 600;
 
     private AppCompatImageView mCurrentCat;
     private NumberPicker mPicker;
     private AppCompatEditText mJumpEdit;
 
+
+    private CardView mCardSave;
     private AppCompatTextView mTextFrom;
     private AppCompatTextView mTextTo;
+    private AppCompatImageView mCatFrom;
+    private AppCompatImageView mCatTo;
     private AppCompatSeekBar mSeekFrom;
     private AppCompatSeekBar mSeekTo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +72,7 @@ public class MainActivity extends Activity {
                 try {
                     jump = Integer.parseInt(input);
                 } catch (NumberFormatException error) {
-                    Toast.makeText(getApplicationContext(), R.string.limit_over, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(mCardSave, R.string.limit_over, Snackbar.LENGTH_SHORT).show();
                     return;
                 }
                 mPicker.setValue(jump);
@@ -82,12 +91,19 @@ public class MainActivity extends Activity {
             }
         });
 
+        // initialize
         mJumpEdit.setText(String.valueOf(Math.abs(ThreadLocalRandom.current().nextInt())));
         jumpButton.callOnClick();
 
+
         // --- save 1000 cats ---
+        mCardSave = findViewById(R.id.card_save);
+
         mTextFrom = findViewById(R.id.text_from);
         mTextTo = findViewById(R.id.text_to);
+
+        mCatFrom = findViewById(R.id.cat_from);
+        mCatTo = findViewById(R.id.cat_to);
 
         mSeekFrom = findViewById(R.id.seek_from);
         mSeekTo = findViewById(R.id.seek_to);
@@ -95,11 +111,12 @@ public class MainActivity extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 Cat cat = new Cat(getApplicationContext(), progress);
-                seekBar.setThumb(cat.getCurrent());
                 if (seekBar.getId() == R.id.seek_from) {
                     mTextFrom.setText(getString(R.string.from, String.valueOf(progress)));
+                    mCatFrom.setImageDrawable(cat);
                 } else {
                     mTextTo.setText(getString(R.string.to, String.valueOf(progress)));
+                    mCatTo.setImageDrawable(cat);
                 }
             }
 
@@ -116,7 +133,34 @@ public class MainActivity extends Activity {
         mSeekFrom.setOnSeekBarChangeListener(change);
         mSeekTo.setOnSeekBarChangeListener(change);
 
+        AppCompatButton saveButton = findViewById(R.id.save_cats);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_SHORT)
+                        .setAction(R.string.go, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent();
+                                intent.setAction(Intent.ACTION_VIEW);
+                                final File dir = new File(
+                                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                                        getString(R.string.directory_name));
+                                Uri uri = Uri.parse(dir.getAbsolutePath());
+                                intent.setDataAndType(uri, "*/*");
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
+        });
 
+        // initialize
+        Random random = new Random();
+        int a = random.nextInt(999);
+        int b = random.nextInt(999);
+        mSeekFrom.setProgress(a > b ? b : a);
+        mSeekTo.setProgress(a > b ? a : b);
     }
 
     private void shareCat(Cat cat) {
@@ -151,7 +195,7 @@ public class MainActivity extends Activity {
                 startActivity(Intent.createChooser(intent, null));
                 cat.logShare(this);
             } catch (IOException e) {
-                Toast.makeText(this, "fail...", Toast.LENGTH_SHORT).show();
+                Snackbar.make(mCardSave, R.string.fail_save, Snackbar.LENGTH_SHORT).show();
             }
         }
     }

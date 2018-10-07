@@ -23,6 +23,11 @@
     <string name="from">from : %s</string>
     <string name="to">to : %s</string>
     <string name="limit_over">limit over!</string>
+    <string name="save_1000_cats">save 1000 cats</string>
+    <string name="save_the_cats">save the cats!</string>
+    <string name="snack_store">stored in Pictures/Cats</string>
+    <string name="go">GO</string>
+    <string name="fail_save">fail to share cat...</string>
     <string-array name="food_names" translatable="false">
         <item>Empty dish</item>
         <item>Bits</item>
