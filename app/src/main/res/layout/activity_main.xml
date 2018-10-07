@@ -9,53 +9,78 @@
     tools:context=".MainActivity">
 
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="#FBE9E7"
+        app:cardCornerRadius="@dimen/cardview_default_radius"
+        app:cardElevation="@dimen/cardview_default_elevation"
+        app:cardUseCompatPadding="true">
 
-        <NumberPicker
-            android:id="@+id/picker"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true" />
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/current_cat"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerInParent="true" />
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ff7043"
+                android:padding="8dp"
+                android:text="@string/generate_cat"
+                android:textColor="#000000" />
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/input_jump"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:inputType="number"
-            android:maxLength="10" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp">
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/button_jump"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/input_jump"
-            android:layout_alignParentRight="true"
-            android:text="ジャンプ" />
+                <NumberPicker
+                    android:id="@+id/picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true" />
 
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/current_cat"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true" />
 
-    </RelativeLayout>
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/input_jump"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:inputType="number"
+                    android:maxLength="10" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/button_jump"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/input_jump"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/jump" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
+    </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/text_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="from:"
+        android:text="@string/from"
         android:textSize="16sp" />
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/seek_from"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:max="998"
         android:progress="0" />
 
@@ -63,14 +88,15 @@
         android:id="@+id/text_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="to:"
+        android:text="@string/to"
         android:textSize="16sp" />
 
     <android.support.v7.widget.AppCompatSeekBar
         android:id="@+id/seek_to"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:max="999"
         android:progress="1" />
 
