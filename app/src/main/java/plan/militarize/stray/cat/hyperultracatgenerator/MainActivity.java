@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
                 try {
                     jump = Integer.parseInt(input);
                 } catch (NumberFormatException error) {
-                    Toast.makeText(getApplicationContext(), "limit over!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.limit_over, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mPicker.setValue(jump);
@@ -86,9 +86,9 @@ public class MainActivity extends Activity {
                 Cat cat = new Cat(getApplicationContext(), progress);
                 seekBar.setThumb(cat.getCurrent());
                 if (seekBar.getId() == R.id.seek_from) {
-                    mTextFrom.setText("from : " + progress);
+                    mTextFrom.setText(getString(R.string.from, String.valueOf(progress)));
                 } else {
-                    mTextTo.setText("to : " + progress);
+                    mTextTo.setText(getString(R.string.to, String.valueOf(progress)));
                 }
             }
 
