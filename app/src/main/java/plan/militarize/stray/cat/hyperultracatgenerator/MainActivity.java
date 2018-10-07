@@ -7,6 +7,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
@@ -46,6 +47,12 @@ public class MainActivity extends Activity {
 
         // --- generate cat ---
         mCurrentCat = findViewById(R.id.current_cat);
+        mCurrentCat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareCat(new Cat(getApplicationContext(), mPicker.getValue()));
+            }
+        });
         mJumpEdit = findViewById(R.id.input_jump);
         AppCompatButton jumpButton = findViewById(R.id.button_jump);
         jumpButton.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +138,12 @@ public class MainActivity extends Activity {
                         new String[]{png.toString()},
                         new String[]{"image/png"},
                         null);
-                Uri uri = Uri.fromFile(png);
+//                Uri uri = Uri.fromFile(png);
+                Uri uri = FileProvider.getUriForFile(
+                        getApplicationContext(),
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        png
+                );
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.putExtra(Intent.EXTRA_STREAM, uri);
                 intent.putExtra(Intent.EXTRA_SUBJECT, cat.getName());
@@ -139,6 +151,7 @@ public class MainActivity extends Activity {
                 startActivity(Intent.createChooser(intent, null));
                 cat.logShare(this);
             } catch (IOException e) {
+                Toast.makeText(this, "fail...", Toast.LENGTH_SHORT).show();
             }
         }
     }
