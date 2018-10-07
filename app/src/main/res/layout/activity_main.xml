@@ -8,6 +8,42 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <NumberPicker
+            android:id="@+id/picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/current_cat"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/input_jump"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:inputType="number"
+            android:maxLength="10" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/button_jump"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/input_jump"
+            android:layout_alignParentRight="true"
+            android:text="ジャンプ" />
+
+
+    </RelativeLayout>
+
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/text_from"
         android:layout_width="wrap_content"
