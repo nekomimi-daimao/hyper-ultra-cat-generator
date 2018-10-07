@@ -1,12 +1,16 @@
 package plan.militarize.stray.cat.hyperultracatgenerator;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -15,17 +19,16 @@ import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatSeekBar;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.View;
 import android.widget.NumberPicker;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,12 +36,13 @@ import plan.militarize.stray.cat.hyperultracatgenerator.com.android.egg.neko.Cat
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     private static final int EXPORT_BITMAP_SIZE = 600;
 
     private AppCompatImageView mCurrentCat;
     private NumberPicker mPicker;
     private AppCompatEditText mJumpEdit;
-
 
     private CardView mCardSave;
     private AppCompatTextView mTextFrom;
@@ -59,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
         mCurrentCat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String[] denied = Arrays.stream(PERMISSIONS)
+                        .filter(permission -> ContextCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED)
+                        .toArray((String[]::new));
+
+                if (denied.length > 0) {
+                    requestPermissions(denied, v.getId());
+                    return;
+                }
                 shareCat(new Cat(getApplicationContext(), mPicker.getValue()));
             }
         });
@@ -137,17 +150,26 @@ public class MainActivity extends AppCompatActivity {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] denied = Arrays.stream(PERMISSIONS)
+                        .filter(permission -> ContextCompat.checkSelfPermission(getApplicationContext(), permission) != PackageManager.PERMISSION_GRANTED)
+                        .toArray((String[]::new));
+
+                if (denied.length > 0) {
+                    requestPermissions(denied, v.getId());
+                    return;
+                }
+
                 Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_SHORT)
                         .setAction(R.string.go, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_VIEW);
+                                intent.setAction(Intent.ACTION_PICK);
                                 final File dir = new File(
                                         Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                                         getString(R.string.directory_name));
                                 Uri uri = Uri.parse(dir.getAbsolutePath());
-                                intent.setDataAndType(uri, "*/*");
+                                intent.setDataAndType(uri, "image/png");
                                 startActivity(intent);
                             }
                         })
@@ -161,6 +183,29 @@ public class MainActivity extends AppCompatActivity {
         int b = random.nextInt(999);
         mSeekFrom.setProgress(a > b ? b : a);
         mSeekTo.setProgress(a > b ? a : b);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for (int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                Snackbar.make(mCardSave, R.string.request_permission, Snackbar.LENGTH_SHORT).show();
+                return;
+            }
+        }
+        switch (requestCode) {
+            case R.id.current_cat:
+                shareCat(new Cat(getApplicationContext(), mPicker.getValue()));
+                break;
+            case R.id.save_cats:
+                // TODO save tha cats
+                break;
+            default:
+                return;
+        }
+
     }
 
     private void shareCat(Cat cat) {

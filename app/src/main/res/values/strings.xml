@@ -28,6 +28,7 @@
     <string name="snack_store">stored in Pictures/Cats</string>
     <string name="go">GO</string>
     <string name="fail_save">fail to share cat...</string>
+    <string name="request_permission">require permission for save cats...</string>
     <string-array name="food_names" translatable="false">
         <item>Empty dish</item>
         <item>Bits</item>
