@@ -29,6 +29,7 @@
     <string name="go">GO</string>
     <string name="fail_save">fail to share cat...</string>
     <string name="request_permission">require permission for save cats...</string>
+    <string name="from_and_to"><![CDATA[from > to. set from < to]]></string>
     <string-array name="food_names" translatable="false">
         <item>Empty dish</item>
         <item>Bits</item>

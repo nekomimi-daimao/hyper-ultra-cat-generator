@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    private static final int EXPORT_BITMAP_SIZE = 600;
+    public static final int EXPORT_BITMAP_SIZE = 600;
 
     private AppCompatImageView mCurrentCat;
     private NumberPicker mPicker;
@@ -158,23 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     requestPermissions(denied, v.getId());
                     return;
                 }
-                CatServeService.startActionSaveCats(getApplicationContext(),0,100);
-
-                Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.go, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent();
-                                intent.setAction(Intent.ACTION_PICK);
-                                final File dir = new File(
-                                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                                        getString(R.string.directory_name));
-                                Uri uri = Uri.parse(dir.getAbsolutePath());
-                                intent.setDataAndType(uri, "image/png");
-                                startActivity(intent);
-                            }
-                        })
-                        .show();
+                saveCat(mSeekFrom.getProgress(), mSeekTo.getProgress());
             }
         });
 
@@ -201,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 shareCat(new Cat(getApplicationContext(), mPicker.getValue()));
                 break;
             case R.id.save_cats:
-                // TODO save tha cats
+                saveCat(mSeekFrom.getProgress(), mSeekTo.getProgress());
                 break;
             default:
                 return;
@@ -244,6 +228,31 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(mCardSave, R.string.fail_save, Snackbar.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void saveCat(final int from, final int to) {
+        if (from > to) {
+            Snackbar.make(mCardSave, R.string.from_and_to, Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        CatServeService.startActionSaveCats(getApplicationContext(), from, to);
+
+        Snackbar.make(mCardSave, R.string.snack_store, Snackbar.LENGTH_LONG)
+                .setAction(R.string.go, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_PICK);
+                        final File dir = new File(
+                                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                                getString(R.string.directory_name));
+                        Uri uri = Uri.parse(dir.getAbsolutePath());
+                        intent.setDataAndType(uri, "image/png");
+                        startActivity(intent);
+                    }
+                })
+                .show();
     }
 
 
