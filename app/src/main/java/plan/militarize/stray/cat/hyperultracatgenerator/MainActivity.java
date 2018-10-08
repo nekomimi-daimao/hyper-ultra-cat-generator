@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int EXPORT_BITMAP_SIZE = 600;
 
     private AppCompatImageView mCurrentCat;
+    private AppCompatTextView mCurrentCatName;
     private NumberPicker mPicker;
     private AppCompatEditText mJumpEdit;
 
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().show();
+        }
 
         // --- generate cat ---
         mCurrentCat = findViewById(R.id.current_cat);
@@ -75,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 shareCat(new Cat(getApplicationContext(), mPicker.getValue()));
             }
         });
+        mCurrentCatName = findViewById(R.id.current_cat_name);
         mJumpEdit = findViewById(R.id.input_jump);
         AppCompatButton jumpButton = findViewById(R.id.button_jump);
         jumpButton.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +95,11 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
                 mPicker.setValue(jump);
-                mCurrentCat.setImageDrawable(new Cat(getApplicationContext(), jump));
+                Cat cat = new Cat(getApplicationContext(), jump);
+                mCurrentCat.setImageDrawable(cat);
+                mCurrentCatName.setText(cat.getName());
             }
         });
-
 
         mPicker = findViewById(R.id.picker);
         mPicker.setMinValue(0);
@@ -100,7 +107,9 @@ public class MainActivity extends AppCompatActivity {
         mPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                mCurrentCat.setImageDrawable(new Cat(getApplicationContext(), newVal));
+                Cat cat = new Cat(getApplicationContext(), newVal);
+                mCurrentCat.setImageDrawable(cat);
+                mCurrentCatName.setText(cat.getName());
             }
         });
 
@@ -123,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         SeekBar.OnSeekBarChangeListener change = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                Cat cat = new Cat(getApplicationContext(), progress);
+                Cat cat = Cat.create(getApplicationContext());
                 if (seekBar.getId() == R.id.seek_from) {
                     mTextFrom.setText(getString(R.string.from, String.valueOf(progress)));
                     mCatFrom.setImageDrawable(cat);
