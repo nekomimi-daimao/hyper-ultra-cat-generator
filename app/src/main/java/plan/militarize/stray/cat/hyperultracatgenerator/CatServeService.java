@@ -10,10 +10,12 @@ import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -29,6 +31,9 @@ import plan.militarize.stray.cat.hyperultracatgenerator.com.android.egg.neko.Cat
 import static plan.militarize.stray.cat.hyperultracatgenerator.MainActivity.EXPORT_BITMAP_SIZE;
 
 public class CatServeService extends IntentService {
+
+    private static final String TAG = "CatServeService";
+
     private static final String ACTION_SAVE_CATS = "plan.militarize.stray.cat.hyperultracatgenerator.action.save.cats";
 
     private static final String EXTRA_NUM_FROM = "plan.militarize.stray.cat.hyperultracatgenerator.extra.num.from";
@@ -82,8 +87,8 @@ public class CatServeService extends IntentService {
             manager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_SAVE_CAT);
-        builder.setContentTitle(getString(R.string.app_name))
-                .setContentText("now generating cats...")
+        builder.setContentTitle("now generating cats...")
+                .setContentText(0 + "/" + MAX)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setAutoCancel(false)
                 .setWhen(System.currentTimeMillis())
@@ -92,7 +97,7 @@ public class CatServeService extends IntentService {
 
         Set<Integer> set = new HashSet<>(MAX);
         List<Future<?>> list = new ArrayList<Future<?>>(MAX);
-        executorService = Executors.newWorkStealingPool();
+        executorService = Executors.newSingleThreadExecutor();
 
         while (set.size() < MAX) {
             int seed = Math.abs(ThreadLocalRandom.current().nextInt());
@@ -104,29 +109,37 @@ public class CatServeService extends IntentService {
                 continue;
             }
             set.add(name);
-            list.add(executorService.submit(new CatSaver(seed)));
+            list.add(executorService.submit(new CatSaver(getApplicationContext(), seed)));
         }
         executorService.shutdown();
 
         for (int count = 0; count < list.size(); count++) {
             try {
                 list.get(count).get();
-                builder.setProgress(MAX, count, false);
+                builder.setProgress(MAX, count, false)
+                        .setContentText(count + "/" + MAX);
                 manager.notify(NOTIFICATION_ID_SAVE_CAT_PROGRESS, builder.build());
             } catch (ExecutionException | InterruptedException e) {
+                manager.cancel(NOTIFICATION_ID_SAVE_CAT_PROGRESS);
+                Log.e(TAG, "some thread error!");
+                return;
             }
         }
 
-        builder.setProgress(0, 0, false);
-        builder.setContentText("complete! you have " + MAX + " cats!");
+        builder.setProgress(0, 0, false)
+                .setContentTitle("complete! you have " + MAX + " cats!")
+                .setContentText("your android was filled with cats...")
+                .setAutoCancel(true);
         manager.notify(NOTIFICATION_ID_SAVE_CAT_FINISH, builder.build());
     }
 
-    private class CatSaver implements Runnable {
+    private static class CatSaver implements Runnable {
 
         private final long seed;
+        private final Context context;
 
-        CatSaver(final long seed) {
+        CatSaver(final Context context, final long seed) {
+            this.context = context;
             this.seed = seed;
         }
 
@@ -134,13 +147,14 @@ public class CatServeService extends IntentService {
         public void run() {
             final File dir = new File(
                     Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    getString(R.string.directory_name));
+                    context.getString(R.string.directory_name));
             if (!dir.exists() && !dir.mkdirs()) {
                 return;
             }
-            Cat cat = new Cat(getApplicationContext(), seed);
+            Cat cat = new Cat(context, seed);
             final File png = new File(dir, cat.getName().replaceAll("[/ #:]+", "_") + ".png");
             Bitmap bitmap = cat.createBitmap(EXPORT_BITMAP_SIZE, EXPORT_BITMAP_SIZE);
+            cat = null;
             if (bitmap == null) {
                 return;
             }
@@ -150,11 +164,12 @@ public class CatServeService extends IntentService {
                 bitmap.recycle();
                 bitmap = null;
                 MediaScannerConnection.scanFile(
-                        getApplicationContext(),
+                        context,
                         new String[]{png.toString()},
                         new String[]{"image/png"},
                         null);
             } catch (Exception e) {
+                Log.e(TAG, "fail to save cats...");
             }
         }
     }
