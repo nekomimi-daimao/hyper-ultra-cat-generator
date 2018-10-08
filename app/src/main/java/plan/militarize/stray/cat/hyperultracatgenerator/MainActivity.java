@@ -59,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().show();
-        }
+
+        setSupportActionBar(findViewById(R.id.toolbar));
 
         // --- generate cat ---
         mCurrentCat = findViewById(R.id.current_cat);

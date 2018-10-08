@@ -1,189 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFDE7"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ToolbarTheme"
+        app:title="Hyper Ultra Cat Generator!" />
 
-        android:padding="20dp">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
+        <android.support.v7.widget.LinearLayoutCompat
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardBackgroundColor="#FBE9E7"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <android.support.v7.widget.LinearLayoutCompat
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                app:cardBackgroundColor="#FBE9E7"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-                <android.support.v7.widget.AppCompatTextView
+                <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ff7043"
-                    android:padding="8dp"
-                    android:text="@string/generate_cat"
-                    android:textColor="#fafafa" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
-
-                    <NumberPicker
-                        android:id="@+id/picker"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true" />
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/current_cat"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_centerInParent="true" />
+                    android:orientation="vertical">
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/current_cat_name"
-                        android:layout_width="100dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="0dp"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center">
+                        android:background="#ff7043"
+                        android:padding="8dp"
+                        android:text="@string/generate_cat"
+                        android:textColor="#fafafa" />
 
-                        <requestFocus />
-                    </android.support.v7.widget.AppCompatTextView>
-                    />
-
-                    <android.support.v7.widget.AppCompatEditText
-                        android:id="@+id/input_jump"
-                        android:layout_width="100dp"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:inputType="number"
-                        android:maxLength="10" />
+                        android:padding="8dp">
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/button_jump"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/input_jump"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/jump"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                        android:textColor="@color/colorAccent" />
+                        <NumberPicker
+                            android:id="@+id/picker"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true" />
 
-                </RelativeLayout>
-            </android.support.v7.widget.LinearLayoutCompat>
-        </android.support.v7.widget.CardView>
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/current_cat"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerInParent="true" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/card_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            app:cardBackgroundColor="#b3e5fc"
-            app:cardCornerRadius="6dp"
-            app:cardElevation="2dp"
-            app:cardUseCompatPadding="true">
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/current_cat_name"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="0dp"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center">
 
-            <android.support.v7.widget.LinearLayoutCompat
+                            <requestFocus />
+                        </android.support.v7.widget.AppCompatTextView>
+                        />
+
+                        <android.support.v7.widget.AppCompatEditText
+                            android:id="@+id/input_jump"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="4dp"
+                            android:layout_marginBottom="4dp"
+                            android:inputType="number"
+                            android:maxLength="10" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/button_jump"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/input_jump"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/jump"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                            android:textColor="@color/colorAccent" />
+
+                    </RelativeLayout>
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="12dp"
+                app:cardBackgroundColor="#b3e5fc"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
 
-                <android.support.v7.widget.AppCompatTextView
+                <android.support.v7.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#039be5"
-                    android:padding="8dp"
-                    android:text="@string/save_1000_cats"
-                    android:textColor="#fafafa" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    android:orientation="vertical">
 
                     <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/text_from"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:text="@string/from"
-                        android:textSize="16sp" />
-
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/cat_from"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignBottom="@id/text_from"
-                        android:layout_centerHorizontal="true" />
-
-                    <android.support.v7.widget.AppCompatSeekBar
-                        android:id="@+id/seek_from"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/text_from"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:max="998"
-                        android:progress="0" />
-
-                    <android.support.v7.widget.AppCompatTextView
-                        android:id="@+id/text_to"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/seek_from"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/to"
-                        android:textSize="16sp" />
+                        android:background="#039be5"
+                        android:padding="8dp"
+                        android:text="@string/save_1000_cats"
+                        android:textColor="#fafafa" />
 
-                    <android.support.v7.widget.AppCompatImageView
-                        android:id="@+id/cat_to"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_alignBottom="@id/text_to"
-                        android:layout_centerHorizontal="true" />
-
-                    <android.support.v7.widget.AppCompatSeekBar
-                        android:id="@+id/seek_to"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/text_to"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:max="999"
-                        android:progress="1" />
-
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/save_cats"
-                        style="@style/Widget.AppCompat.Button.Colored"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/seek_to"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="8dp"
-                        android:text="@string/save_the_cats"
-                        android:textAllCaps="false" />
-                </RelativeLayout>
-            </android.support.v7.widget.LinearLayoutCompat>
-        </android.support.v7.widget.CardView>
+                        android:padding="8dp">
 
-    </android.support.v7.widget.LinearLayoutCompat>
-</ScrollView>
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/text_from"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:text="@string/from"
+                            android:textSize="16sp" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/cat_from"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignBottom="@id/text_from"
+                            android:layout_centerHorizontal="true" />
+
+                        <android.support.v7.widget.AppCompatSeekBar
+                            android:id="@+id/seek_from"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@+id/text_from"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:max="998"
+                            android:progress="0" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/text_to"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/seek_from"
+                            android:layout_alignParentRight="true"
+                            android:text="@string/to"
+                            android:textSize="16sp" />
+
+                        <android.support.v7.widget.AppCompatImageView
+                            android:id="@+id/cat_to"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_alignBottom="@id/text_to"
+                            android:layout_centerHorizontal="true" />
+
+                        <android.support.v7.widget.AppCompatSeekBar
+                            android:id="@+id/seek_to"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_below="@id/text_to"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:max="999"
+                            android:progress="1" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/save_cats"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/seek_to"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/save_the_cats"
+                            android:textAllCaps="false" />
+                    </RelativeLayout>
+                </android.support.v7.widget.LinearLayoutCompat>
+            </android.support.v7.widget.CardView>
+
+        </android.support.v7.widget.LinearLayoutCompat>
+    </ScrollView>
+</android.support.v7.widget.LinearLayoutCompat>
