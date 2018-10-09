@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
@@ -15,7 +16,6 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -89,10 +89,14 @@ public class CatServeService extends IntentService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_SAVE_CAT);
         builder.setContentTitle("now generating cats...")
                 .setContentText(0 + "/" + MAX)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.ic_notification_small)
+                .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.ic_launcher))
+                .setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorAccent))
                 .setAutoCancel(false)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                 .setWhen(System.currentTimeMillis())
-                .setProgress(MAX, 0, false);
+                .setProgress(MAX, 0, false)
+        ;
         startForeground(NOTIFICATION_ID_SAVE_CAT_PROGRESS, builder.build());
 
         Set<Integer> set = new HashSet<>(MAX);
@@ -126,10 +130,13 @@ public class CatServeService extends IntentService {
             }
         }
 
+        manager.cancel(NOTIFICATION_ID_SAVE_CAT_PROGRESS);
         builder.setProgress(0, 0, false)
                 .setContentTitle("complete! you have " + MAX + " cats!")
                 .setContentText("your android was filled with cats...")
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setCategory(NotificationCompat.CATEGORY_EVENT);
+
         manager.notify(NOTIFICATION_ID_SAVE_CAT_FINISH, builder.build());
     }
 
